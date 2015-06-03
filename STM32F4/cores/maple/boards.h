@@ -39,9 +39,9 @@
 #ifndef _BOARDS_H_
 #define _BOARDS_H_
 
-#include "libmaple.h"
-#include "gpio.h"
-#include "timer.h"
+#include "libmaple/libmaple.h"
+#include "libmaple/gpio.h"
+#include "libmaple/timer.h"
 
 #include "wirish_types.h"
 
@@ -142,6 +142,10 @@ bool boardUsesPin(uint8 pin);
 #include "discovery_f4.h"
 #elif defined(BOARD_freeflight)
 #include "freeflight.h"
+// sheepdoll -- added hack for Nucleo F401
+#elif defined(BOARD_nucleo_f401re)
+#include "board/board.h"
+
 #else
 /*
  * TODO turn this into a warning so people can:

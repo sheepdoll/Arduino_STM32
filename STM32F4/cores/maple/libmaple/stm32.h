@@ -210,6 +210,18 @@
     #define NR_GPIO_PORTS               STM32_NR_GPIO_PORTS
     #define DELAY_US_MULT               STM32_DELAY_US_MULT
 
+// sheepdoll -- new definitions for F401 Nucleo
+#elif defined(MCU_STM32F401RE)
+	#define STM32_TICKS_PER_US          168
+    #define STM32_NR_GPIO_PORTS          4
+    #define STM32_DELAY_US_MULT         (STM32_TICKS_PER_US/3)
+    #define STM32_SRAM_END              ((void*)0x20010000)
+    //#define STM32_SRAM_END              ((void*)0x20030000)
+
+    #define NR_GPIO_PORTS               STM32_NR_GPIO_PORTS
+    #define DELAY_US_MULT               STM32_DELAY_US_MULT
+
+
 #else
 
 #error "No MCU type specified. Add something like -DMCU_STM32F103RB "   \

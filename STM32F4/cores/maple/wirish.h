@@ -33,7 +33,8 @@
 #ifndef _WIRISH_H_
 #define _WIRISH_H_
 
-#include "libmaple.h"
+// sheepdoll -- moved boards into wiresh like F1 does
+#include "libmaple/libmaple.h"
 
 #include "wirish_types.h"
 #include "boards.h"
@@ -44,8 +45,8 @@
 #include "wirish_debug.h"
 #include "wirish_math.h"
 #include "wirish_time.h"
-#include "HardwareSPI.h"
-#include "HardwareSerial.h"
+#include "libmaple/HardwareSPI.h" // sheepdoll
+#include "libmaple/HardwareSerial.h" // may need to move this
 #include "HardwareTimer.h"
 #include "usb_serial.h"
 

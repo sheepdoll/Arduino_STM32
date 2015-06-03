@@ -30,4 +30,34 @@ discovery_f407.build.error_led_pin=14
 #discovery_f407.build.gcc_ver=gcc-arm-none-eabi-4.8.3-2014q1
 
 ##############################################################
+nucleo_f401re.name=STM Nucleo F401RE (STLink)
+
+nucleo_f401re.upload.tool=stlink_upload
+nucleo_f401re.upload.protocol=maple_dfu
+nucleo_f401re.upload.maximum_size=500000
+#nucleo_f401re.upload.use_1200bps_touch=false
+nucleo_f401re.upload.file_type=bin
+nucleo_f401re.upload.ram.maximum_size=97000
+nucleo_f401re.upload.flash.maximum_size=500000
+nucleo_f401re.upload.params.quiet=no
+
+#nucleo_f401re.upload.usbID=1EAF:0003
+#nucleo_f401re.upload.altID=1
+#nucleo_f401re.upload.auto_reset=true
+
+nucleo_f401re.build.mcu=cortex-m4
+nucleo_f401re.build.f_cpu=84000000L
+nucleo_f401re.build.board=STM_NUCLEO_F401RE
+nucleo_f401re.build.core=maple
+nucleo_f401re.build.extra_flags=-DMCU_STM32F401RE -DSTM32_MEDIUM_DENSITY -DSTM32F2 -DBOARD_NUCLEO_F401RE
+nucleo_f401re.build.ldscript=ld/jtag.ld
+nucleo_f401re.build.variant=nucleo_f401re
+nucleo_f401re.build.variant_system_lib=lib_f401.a
+#nucleo_f401re.build.vect=VECT_TAB_FLASH
+nucleo_f401re.build.vect=VECT_TAB_BASE
+nucleo_f401re.build.density=STM32_HIGH_DENSITY
+nucleo_f401re.build.error_led_port=GPIOA
+nucleo_f401re.build.error_led_pin=5
+#nucleo_f401re.build.gcc_ver=gcc-arm-none-eabi-4.8.3-2014q1
+#nucleo_f401re.build.vect=VECT_TAB_ADDR=0x8000000
 
