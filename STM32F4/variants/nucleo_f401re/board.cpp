@@ -35,7 +35,7 @@
  	
  */
 
-#ifdef BOARD_nucleo_f401
+#ifdef BOARD_nucleo_f401re
 
 #include "board/board.h"
 
@@ -74,11 +74,14 @@ void boardInit(void) {
 	gpio_set_af_mode(GPIOC, 8, 3);
 	gpio_set_af_mode(GPIOC, 9, 3);
 
+// sheepdoll Nucleos do not have port E
+#ifdef STM32_HIGH_DENSITY
 	// remap TIMER1 to PE9,11,13,14
 	gpio_set_af_mode(GPIOE,  9, 1);
 	gpio_set_af_mode(GPIOE, 11, 1);
 	gpio_set_af_mode(GPIOE, 13, 1);
 	gpio_set_af_mode(GPIOE, 14, 1);
+#endif
 
 	// remap TIMER3 to PB4,5,0,1
 	gpio_set_af_mode(GPIOB,  4, 2);
@@ -213,7 +216,8 @@ static void initSRAMChip(void) {
     fsmc_nor_psram_set_datast(regs, 3);
 }
 */
-
+// sheepdoll code fix not compatable
+#ifdef STM32_HIGH_DENSITY
 /* 
  * Roger Clark
  * 
@@ -231,6 +235,7 @@ static void initSRAMChip(void) {
    DEFINE_HWSERIAL(Serial, 6);// Use HW Serial 6 as "Serial"
    DEFINE_HWSERIAL(Serial1, 2);
    DEFINE_HWSERIAL(Serial2, 1);
+#endif
 #endif
 
 #endif

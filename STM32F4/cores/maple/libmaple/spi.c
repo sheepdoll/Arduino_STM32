@@ -56,6 +56,9 @@ static spi_dev spi2 = {
 /** SPI device 2 */
 spi_dev *SPI2 = &spi2;
 
+// sheepdoll account for smaller nucleo pin counts
+// this needs rework
+
 #ifdef STM32_HIGH_DENSITY
 static spi_dev spi3 = {
     .regs     = SPI3_BASE,
@@ -64,7 +67,7 @@ static spi_dev spi3 = {
 };
 /** SPI device 3 */
 spi_dev *SPI3 = &spi3;
-#endif
+
 
 #ifdef STM32F2
 static spi_dev spi4 = {
@@ -74,6 +77,8 @@ static spi_dev spi4 = {
 };
 /** SPI device 3 remapped*/
 spi_dev *SPI4 = &spi4;
+#endif
+
 #endif
 
 /*
