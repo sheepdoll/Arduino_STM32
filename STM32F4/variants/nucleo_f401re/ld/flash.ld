@@ -1,12 +1,13 @@
 /*
  * Discovery F4 (STM32F407VGT6, high density) linker script for
  * Flash builds.
+ * hacked for STM401 medium density -- sheepdoll
  */
 
 MEMORY
 {
-  ram (rwx) : ORIGIN = 0x20000C00, LENGTH = 125K
-  rom (rx)  : ORIGIN = 0x08010000, LENGTH = 960K  /* ala42 */
+  ram (rwx) : ORIGIN = 0x20000000, LENGTH = 96K 
+  rom (rx)  : ORIGIN = 0x08000000, LENGTH = 512K  /* sheepdoll ala42 */
 }
 
 /* GROUP(libcs4_stm32_high_density.a) */

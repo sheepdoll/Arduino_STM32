@@ -5,5 +5,9 @@ The F407.
 
 Revision History:
 
-9 June 2015:  Blink example code will compile Using the F2/F407 maple library. 
+9 June 2015:  
+Hacked *.ld scripts to see if it made any difference correcting the
+memory limits.  -still no blink.
+
+Blink example code will compile using the F2/F407 maple library. 
 Hardware settings Still mostly map the F407 pins. LED is not active.

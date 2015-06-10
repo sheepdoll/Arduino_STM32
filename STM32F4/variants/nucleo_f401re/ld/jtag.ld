@@ -1,11 +1,12 @@
 /*
  * aeroquad32 (STM32F103VET6, high density) linker script for
  * JTAG (bare metal, no bootloader) builds.
+ * hacked for ST32F401 sheepdoll
  */
 
 MEMORY
 {
-  ram (rwx) : ORIGIN = 0x20000000, LENGTH = 64K
+  ram (rwx) : ORIGIN = 0x20000000, LENGTH = 96K
   rom (rx)  : ORIGIN = 0x08000000, LENGTH = 512K
 }
 
