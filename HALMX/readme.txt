@@ -18,4 +18,7 @@
 Revision History:
 
 10 June 2015:  
-	initial setup. 
+	initial setup.  Import project from STM32CubeMX.  Change platforms.txt and boards.txt
+	 to compile from CSMIS and HAL.  
+	 Changed some compiler defines to reflect HAL options.
+	 Moved and renamed startup_stm32f401xe.S so that Arduino can find it.
