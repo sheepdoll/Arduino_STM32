@@ -53,6 +53,27 @@ void SystemClock_Config(void);
 
 /* USER CODE BEGIN PFP */
 
+/*
+ Sheepdoll from Arduino main()
+*/
+
+void init() __attribute__((weak));
+void init() { } 
+
+/*
+ Weak empty variant initialization function.
+ May be redefined by variant files.
+*/
+void initVariant() __attribute__((weak));
+void initVariant() { }
+	
+/*
+	these are the defines for the hooks
+	into the arduino system.
+*/
+void setup(void);
+void loop(void);
+
 /* USER CODE END PFP */
 
 /* USER CODE BEGIN 0 */
@@ -84,6 +105,15 @@ int main(void)
   MX_USART6_UART_Init();
 
   /* USER CODE BEGIN 2 */
+  /* these calls are from arduino main */
+
+	init();
+
+	initVariant();
+  
+  	/* arduino optionally sets up USB callback stream here */
+
+	setup();
 
   /* USER CODE END 2 */
 
@@ -94,6 +124,8 @@ int main(void)
   /* USER CODE END WHILE */
 
   /* USER CODE BEGIN 3 */
+	loop();
+	/* Arduino callback	if (serialEventRun) serialEventRun(); */
 
   }
   /* USER CODE END 3 */
