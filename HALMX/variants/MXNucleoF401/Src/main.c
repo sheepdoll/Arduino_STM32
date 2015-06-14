@@ -110,9 +110,15 @@ int main(void)
 	init();
 
 	initVariant();
+	
+	HAL_Delay(1); 	/* sam Arduino main() does this so we do it too */
   
-  	/* arduino optionally sets up USB callback stream here */
-
+  	/* Arduino optionally sets up USB callback stream here 
+#if defined(USBCON)
+	USBDevice.attach();
+#endif
+	*/
+	
 	setup();
 
   /* USER CODE END 2 */

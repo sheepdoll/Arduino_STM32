@@ -17,6 +17,10 @@
 
 Revision History:
 
+13 June 2015:
+	partial implementation of digitalIO in wiring.  Mapping of some millisecond
+	timer abstractions to wiring.h
+	start of serial stream imports
 10 June 2015:  
 	initial setup.  Import project from STM32CubeMX.  Change platforms.txt and boards.txt
 	 to compile from CSMIS and HAL.  

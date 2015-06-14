@@ -25,13 +25,6 @@
 #include <string.h>
 #include <math.h>
 
-/*
-	Instantiate the Hal libraries so we can access them direct
-
-*/
-
-#include "stm32f4xx_hal.h"
-
 
 // some libraries and sketches depend on this
 // AVR stuff, assuming Arduino.h or WProgram.h
@@ -78,20 +71,15 @@ typedef void (*voidFuncPtr)( void ) ;
     #define WEAK __attribute__ ((weak))
 #endif
 
-/* Definitions and types for pins */
+/* hardware PIN_IO table setting moved to variant */
+/*
+	For STM32 the pin to port accessors are defined in the
+	build's variant.  STM has a lot more chip footprints than ATMEL does
+	by setting this in the variant, users can build a new definition
+	directly from STM32CubeMX.
+*/
+#include "variant.h"
 
-/* low level defines are declared in STM32CubeMX headers */
-
-/* Types used for the tables below */
-typedef struct _PinDescription
-{
-  void * pPort;
-  GPIO_InitTypeDef GPIO_InitStruct;
-  
-} PinDescription ;
-
-/* Pins table to be instanciated into variant.cpp */
-extern const PinDescription g_APinDescription[] ;
 
 #ifdef __cplusplus
 } // extern "C"
@@ -105,8 +93,6 @@ extern const PinDescription g_APinDescription[] ;
 
 #endif // __cplusplus
 
-// Include board variant
-#include "variant.h"
 
 #include "wiring.h"
 #include "wiring_digital.h"
@@ -114,7 +100,10 @@ extern const PinDescription g_APinDescription[] ;
 #include "wiring_shift.h"
 #include "WInterrupts.h"
 
-// USB Device
+/* USB Device
+	These legacy defines are left here so that systems looking for 
+	Arduino CDC devices can find them.
+*/
 #define USB_VID            0x2341 // arduino LLC vid
 #define USB_PID_LEONARDO   0x0034
 #define USB_PID_MICRO      0x0035

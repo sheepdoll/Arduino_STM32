@@ -110,113 +110,112 @@
  *  VBOF           |  PB10
  *
  */
- #if 0
-     /* Arduino-like header, right connectors */
-    {GPIOA, NULL,   ADC1,   3,  0,    3}, /*  D0/PA3	USART_RX	*/
-    {GPIOA, NULL,   ADC1,   2,  0,    2}, /*  D1/PA2	USART_TX	*/
 
-    {GPIOA, TIMER1, NULL,  10,  3, ADCx}, /*  D2/PA10	USART1_RX	*/
-    {GPIOB, TIMER2, NULL,   3,  2, ADCx}, /*  D3/PB3	SWO			*/
-    {GPIOB, TIMER3, NULL,   5,  2, ADCx}, /*  D4/PB5	GPIO T3		*/
-    {GPIOB, TIMER3, NULL,   4,  1, ADCx}, /*  D5/PB4  	GPIO T3		*/
-    {GPIOB, TIMER2, NULL,  10,  3, ADCx}, /*  D6/PB10	I2C2_SCL	*/
-    {GPIOA, TIMER1, NULL,   8,  1, ADCx}, /*  D7/PA8	GPIO T1		*/
-                   
-    {GPIOA, TIMER1, NULL,   9,  2, ADCx}, /*  D8/PA9	USART1_TX	*/
-    {GPIOC, NULL,   NULL,   7,  0, ADCx}, /*  D9/PC7	GPIO		*/
-    {GPIOB, TIMER4, NULL,   6,  1, ADCx}, /*  D10/PB6	I2C1_SCL	*/
-    {GPIOA, NULL,   ADC1,   7,  0,    7}, /*  D11/PA7	SPI_MOSI_NC	*/
-    {GPIOA, NULL,   ADC1,   6,  0, 	  6}, /*  D12/PA6	SPI_MISO_NC */
-    {GPIOA, NULL,   NULL,   5,  0, ADCx}, /*  D13/PA5 	LED - no ADC12_IN5 SPI_SCK !*/
-    {GPIOB, TIMER4, NULL,   9,  4, ADCx}, /*  D14/PB9 	I2C1_SDA	*/
-    {GPIOB, TIMER4, NULL,   8,  3, ADCx}, /*  D15/PB8 	I2C1_SCL	*/
-                   
-    {GPIOA, NULL,   ADC1,   0,  0,    0}, /*  D16/A0/PA0 GPIO		*/
-    {GPIOA, NULL,   ADC1,   1,  0,    1}, /*  D17/A1/PA1 GPIO		*/
-    {GPIOA, NULL,   ADC1,   4,  0,    4}, /*  D18/A2/PA4 SPI_NSS	*/
-    {GPIOB, TIMER3, ADC1,   0,  3,    8}, /*  D19/A3/PB0 GPIO		*/
-    {GPIOC, NULL,   ADC1,   1,  0,   11}, /*  D20/A4/PC1 GPIO		*/
-    {GPIOC, NULL,   ADC1,   0,  0,   10}, /*  D21/A5/PC0 GPIO		*/
-
-#endif
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
 /*
+
  * Pins descriptions
- */
-/* pPort	ulPin	ulPeripheralId	ulPinType	ulPinConfiguration	ulPinAttribute	ulAnalogChannel	ulADCChannelNumber ulPWMChannel ulTCChannel */
 
-extern const PinDescription g_APinDescription[]=
+ this is reworked to be a bit more abstract.  The main use of this array is for
+ bit banged GPIO setup.  Since we are using the HAL libraries, the setup
+ is through STM32CubeMX for our peripherals, rendering this table
+ redundant for general io and peripheral setup
+ 
+ What we have here is an Abstraction on top of another abstraction. 
+ 
+ The abstraction is that to set or read a pin we only need two items of
+ information, the port and the pin.  As Arduino abstracts by pin
+ we use this abstraction to map into the following table the order
+ of this table should be by Arduino D number
+
+ The only thing the HAL API needs are the port and PIN references
+
+ The following table is written in c shorthand it could also be set up
+ with the more readable 
+ 
+ g_Pin2PortMapArray[D1 ].GPIOx_Port = GPIOA;
+ g_Pin2PortMapArray[D1 ].Pin_abstraction = GPIO_PIN_3    D0/PA3	USART_RX	 
+ g_Pin2PortMapArray[D2 ].GPIOx_Port = GPIOA;
+ g_Pin2PortMapArray[D2].Pin_abstraction = GPIO_PIN_2    D0/PA3	USART_RX
+ ... ect ...
+ Ideally this array should be non mutable and in flash	 
+
+ 
+*/
+
+
+
+extern const Pin2PortMapArray g_Pin2PortMapArray[]=
 {    
-	{ GPIOA,  GPIO_PIN_2|GPIO_PIN_3,  GPIO_MODE_AF_PP, GPIO_NOPULL, GPIO_SPEED_LOW, GPIO_AF7_USART2}, /*  D0/PA3	USART_RX	*/
-	{ GPIOA,  GPIO_PIN_2|GPIO_PIN_3,  GPIO_MODE_AF_PP, GPIO_NOPULL, GPIO_SPEED_LOW, GPIO_AF7_USART2}, /*  D1/PA2	USART_TX	*/
+	{GPIOA, GPIO_PIN_3	},	/*  D0/PA3	USART_RX	*/
+	{GPIOA, GPIO_PIN_2	},	/*  D1/PA2	USART_TX	*/
 	
-    {GPIOA, GPIO_PIN_10,	GPIO_MODE_OUTPUT_PP, GPIO_NOPULL,  GPIO_SPEED_LOW, 0}, /*  D2/PA10	USART1_RX	*/
-    {GPIOB, GPIO_PIN_3,		GPIO_MODE_OUTPUT_PP, GPIO_NOPULL,  GPIO_SPEED_LOW, 0}, /*  D3/PB3	SWO			*/
-    {GPIOB, GPIO_PIN_5,		GPIO_MODE_OUTPUT_PP, GPIO_NOPULL,  GPIO_SPEED_LOW, 0}, /*  D4/PB5	GPIO T3		*/
-    {GPIOB, GPIO_PIN_4,		GPIO_MODE_OUTPUT_PP, GPIO_NOPULL,  GPIO_SPEED_LOW, 0}, /*  D5/PB4  	GPIO T3		*/
-    {GPIOB, GPIO_PIN_10,	GPIO_MODE_OUTPUT_PP, GPIO_NOPULL,  GPIO_SPEED_LOW, 0}, /*  D6/PB10	I2C2_SCL	*/
-    {GPIOA, GPIO_PIN_8,		GPIO_MODE_OUTPUT_PP, GPIO_NOPULL,  GPIO_SPEED_LOW, 0}, /*  D7/PA8	GPIO T1		*/
+    {GPIOA, GPIO_PIN_10	},	/*  D2/PA10	USART1_RX	*/
+    {GPIOB, GPIO_PIN_3  },	/*  D3/PB3	SWO			*/
+    {GPIOB, GPIO_PIN_5	},	/*  D4/PB5	GPIO T3		*/
+    {GPIOB, GPIO_PIN_4  },	/*  D5/PB4  GPIO T3		*/
+    {GPIOB, GPIO_PIN_10	},	/*  D6/PB10	I2C2_SCL	*/
+    {GPIOA, GPIO_PIN_8}	,	/*  D7/PA8	GPIO T1		*/
 
-    {GPIOA, GPIO_PIN_9,		GPIO_MODE_OUTPUT_PP, GPIO_NOPULL,  GPIO_SPEED_LOW, 0}, /*  D8/PA9	USART1_TX	*/
-    {GPIOC, GPIO_PIN_7, 	GPIO_MODE_OUTPUT_PP, GPIO_NOPULL,  GPIO_SPEED_LOW, 0}, /*  D9/PC7	GPIO		*/
-    {GPIOB, GPIO_PIN_6,		GPIO_MODE_OUTPUT_PP, GPIO_NOPULL,  GPIO_SPEED_LOW, 0}, /*  D10/PB6	I2C1_SCL	*/
-    {GPIOA, GPIO_PIN_7,		GPIO_MODE_OUTPUT_PP, GPIO_NOPULL,  GPIO_SPEED_LOW, 0}, /*  D11/PA7	SPI_MOSI_NC	*/
-    {GPIOA, GPIO_PIN_6,		GPIO_MODE_OUTPUT_PP, GPIO_NOPULL,  GPIO_SPEED_LOW, 0}, /*  D12/PA6	SPI_MISO_NC */
+    {GPIOA, GPIO_PIN_9	}, 	/*  D8/PA9	USART1_TX	*/
+    {GPIOC, GPIO_PIN_7	}, 	/*  D9/PC7	GPIO		*/
+    {GPIOB, GPIO_PIN_6	}, 	/*  D10/PB6	I2C1_SCL	*/
+    {GPIOA, GPIO_PIN_7	}, 	/*  D11/PA7	SPI_MOSI_NC	*/
+    {GPIOA, GPIO_PIN_6	}, 	/*  D12/PA6	SPI_MISO_NC */
     
-    {GPIOA, GPIO_PIN_5,		GPIO_MODE_OUTPUT_PP, GPIO_PULLUP,  GPIO_SPEED_FAST, 0}, /*  D13/PA5 	LED - no ADC12_IN5 SPI_SCK !*/
+    {GPIOA, GPIO_PIN_5	},	/*  D13/PA5 LED - no ADC12_IN5 SPI_SCK !*/
     
-    {GPIOB, GPIO_PIN_9,		GPIO_MODE_OUTPUT_PP, GPIO_NOPULL,  GPIO_SPEED_LOW, 0}, /*  D14/PB9 	I2C1_SDA	*/
-    {GPIOB, GPIO_PIN_8,		GPIO_MODE_OUTPUT_PP, GPIO_NOPULL,  GPIO_SPEED_LOW, 0}, /*  D15/PB8 	I2C1_SCL	*/
+    {GPIOB, GPIO_PIN_9	}, 	/*  D14/PB9 I2C1_SDA	*/
+    {GPIOB, GPIO_PIN_8	}, 	/*  D15/PB8 I2C1_SCL	*/
 
-    {GPIOA, GPIO_PIN_0,		GPIO_MODE_OUTPUT_PP, GPIO_NOPULL,  GPIO_SPEED_LOW, 0}, /*  D16/A0/PA0 GPIO		*/
-    {GPIOA, GPIO_PIN_1,		GPIO_MODE_OUTPUT_PP, GPIO_NOPULL,  GPIO_SPEED_LOW, 0}, /*  D17/A1/PA1 GPIO		*/
-    {GPIOA, GPIO_PIN_4,		GPIO_MODE_OUTPUT_PP, GPIO_NOPULL,  GPIO_SPEED_LOW, 0}, /*  D18/A2/PA4 SPI_NSS	*/
-    {GPIOB, GPIO_PIN_0,		GPIO_MODE_OUTPUT_PP, GPIO_NOPULL,  GPIO_SPEED_LOW, 0}, /*  D19/A3/PB0 GPIO		*/
-    {GPIOC, GPIO_PIN_1,		GPIO_MODE_OUTPUT_PP, GPIO_NOPULL,  GPIO_SPEED_LOW, 0}, /*  D20/A4/PC1 GPIO		*/
-    {GPIOC, GPIO_PIN_0,		GPIO_MODE_OUTPUT_PP, GPIO_NOPULL,  GPIO_SPEED_LOW, 0}  /*  D21/A5/PC0 GPIO		*/
+    {GPIOA, GPIO_PIN_0	}, 	/*  D16/A0/PA0 GPIO		*/
+    {GPIOA, GPIO_PIN_1	}, 	/*  D17/A1/PA1 GPIO		*/
+    {GPIOA, GPIO_PIN_4	}, 	/*  D18/A2/PA4 SPI_NSS	*/
+    {GPIOB, GPIO_PIN_0	}, 	/*  D19/A3/PB0 GPIO		*/
+    {GPIOC, GPIO_PIN_1	}, 	/*  D20/A4/PC1 GPIO		*/
+    {GPIOC, GPIO_PIN_0	},  /*  D21/A5/PC0 GPIO		*/
 
     /*
     	 these signals are only on the Morpho headers
     	 Odd pins are on the left header
     	 Even pins are on the right header                 
     */
- #if 0
     
-    {GPIOC, NULL,   NULL,  10,  0, ADCx}, /*  D22/PC10 	SPI_SCK			ML1 */
-	{GPIOC, NULL,   NULL,  12,  0, ADCx}, /*  D23/PC12	SPI_MOSI		ML3 */
-    {GPIOB, TIMER4, NULL,   7,  2, ADCx}, /*  D24/PB7	I2C1_SDA		M21 */
-    {GPIOC, NULL,   NULL,  13,  0, ADCx}, /*  D25/PC13 USER BLUE BUTTON M23 */
-    {GPIOC, NULL,   NULL,  14,  0, ADCx}, /*  D26/PC14 RCC_OSC32_IN 	M25 */
-    {GPIOC, NULL,   NULL,  15,  0, ADCx}, /*  D27/PC15 RCC_OSC32_OUT	M26 */
-    {GPIOC, NULL,   ADC1,   2,  0,   12}, /*  D28/PC2	SPI2_MISO		M35 */
-    {GPIOC, NULL,   ADC1,   3,  0,   13}, /*  D29/PC3	GPIO			M37 */
-    {GPIOC, NULL,   NULL,  11,  0, ADCx}, /*  D30/PC11	SPI3_MISO		ML2 */
-    {GPIOD, NULL,   NULL,   2,  0, ADCx}, /*  D31/PD2 	GPIO			ML4 */
-    {GPIOC, NULL,   NULL,   9,  0, ADCx}, /*  D32/PC9	GPIO			MR1 */
-    {GPIOC, NULL,   NULL,   8,  0, ADCx}, /*  D33/PC8	GPIO			MR2 */
-    {GPIOC, NULL,   NULL,   6,  0, ADCx}, /*  D34/PC6	GPIO			MR4 */
-    {GPIOC, NULL,   ADC1,   5,  0,   15}, /*  D35/PC5	GPIO			MR6 */
-    {GPIOA, NULL,   NULL,  12,  0, ADCx}, /*  D36/PA12 USART6_RX USB_DP M12*/
-    {GPIOA, TIMER1, NULL,  11,  4, ADCx}, /*  D37/PA11 USART6_TX USB_DM M14 */
-    {GPIOB, NULL,   NULL,  12,  0, ADCx}, /*  D38/PB12	SPI2_NSS		M16 */
-    {GPIOB, TIMER2, NULL,  11,  4, ADCx}, /*  D39/PB11	I2C2_SDA		M18 PWM-not working?*/
-    {GPIOB, NULL,   NULL,  2,   0, ADCx}, /*  D40/PB2	BOOT1 !!		ML7 */
-    {GPIOB, TIMER3, ADC1,   1,  4,    9}, /*  D41/PB1	GPIO 			M24 */
-    {GPIOB, NULL,   NULL,  15,  0, ADCx}, /*  D42/PB15	SPI2_MOSI		M26 */
-    {GPIOB, NULL,   NULL,  14,  0, ADCx}, /*  D43/PB14	SPI2_MISO		M28 */
-    {GPIOB, NULL,   NULL,  13,  0, ADCx}, /*  D44/PB13	SPI2_SCK		M30 */
-    {GPIOC, NULL,   ADC1,   4,  0,   14}  /*  D45/PC4	GPIO			M34 */
- #endif 
-  	// JTAG Single wire pins
-	// {GPIOA, NULL,   NULL, 13, 0, ADCx},/* D41/PA13 	TMS	do not use	M13 */
-	// {GPIOA, NULL,   NULL, 14, 0, ADCx},/* D42/PA14	TCK do not use	M15 */
+    {GPIOC, GPIO_PIN_10 },	/*  D22/PC10 	SPI_SCK				ML1 */
+	{GPIOC, GPIO_PIN_12 },	/*  D23/PC12	SPI_MOSI			ML3 */
+    {GPIOB, GPIO_PIN_7  },	/*  D24/PB7		I2C1_SDA			M21 */
+    {GPIOC, GPIO_PIN_13 },	/*  D25/PC13	USER BLUE BUTTON	M23 */
+    {GPIOC, GPIO_PIN_14 },	/*  D26/PC14	RCC_OSC32_IN 		M25 */
+    {GPIOC, GPIO_PIN_15 },	/*  D27/PC15	RCC_OSC32_OUT		M26 */
+    {GPIOC, GPIO_PIN_2  },	/*  D28/PC2		SPI2_MISO			M35 */
+    {GPIOC, GPIO_PIN_3  },	/*  D29/PC3		GPIO				M37 */
+    {GPIOC, GPIO_PIN_11 },	/*  D30/PC11	SPI3_MISO			ML2 */
+    {GPIOD, GPIO_PIN_2, },	/*  D31/PD2 	GPIO				ML4 */
+    {GPIOC, GPIO_PIN_9, },	/*  D32/PC9		GPIO				MR1 */
+    {GPIOC, GPIO_PIN_8, },	/*  D33/PC8		GPIO				MR2 */
+    {GPIOC, GPIO_PIN_6, },	/*  D34/PC6		GPIO				MR4 */
+    {GPIOC, GPIO_PIN_5	},	/*  D35/PC5		GPIO				MR6 */
+    {GPIOA, GPIO_PIN_12	},	/*  D36/PA12	USART6_RX USB_DP	M12 */
+    {GPIOA, GPIO_PIN_11 },	/*  D37/PA1		USART6_TX USB_DM	M14 */
+    {GPIOB, GPIO_PIN_12,},	/*  D38/PB12	SPI2_NSS			M16 */
+    {GPIOB, GPIO_PIN_11 },	/*  D39/PB11	I2C2_SDA			M18 PWM-not working?*/
+    {GPIOB, GPIO_PIN_2  },	/*  D40/PB2		BOOT1 !!			ML7 */
+    {GPIOB, GPIO_PIN_1	},	/*  D41/PB1		GPIO 				M24 */
+    {GPIOB, GPIO_PIN_15 },	/*  D42/PB15	SPI2_MOSI			M26 */
+    {GPIOB, GPIO_PIN_14 },	/*  D43/PB14	SPI2_MISO			M28 */
+    {GPIOB, GPIO_PIN_13 },	/*  D44/PB13	SPI2_SCK			M30 */
+    {GPIOC, GPIO_PIN_4, }	/*  D45/PC4		GPIO				M34 */
 
-// sheepdoll -- not sure why this one is locked out?
-	// {GPIOA, TIMER2, NULL, 15, 1, ADCx},/* D43/PA15 	TDI do not use	M17 */
+  	// JTAG Single wire pins
+	// {GPIOA, NULL,   NULL, 13, 0, ADCx},/* Dxx/PA13 	TMS	do not use	M13 */
+	// {GPIOA, NULL,   NULL, 14, 0, ADCx},/* Dxx/PA14	TCK do not use	M15 */
+
+	// sheepdoll -- not sure why this one is locked out?
+	// {GPIOA, TIMER2, NULL, 15, 1, ADCx},/* Dxx/PA15 	TDI do not use	M17 */
 	
 	
 } ;
