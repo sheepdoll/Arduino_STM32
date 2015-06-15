@@ -109,9 +109,9 @@ extern const Pin2PortMapArray g_Pin2PortMapArray[] ;
 
 #ifdef __cplusplus
 
-//extern UARTClass Serial;
-//extern USARTClass Serial1;
-extern USARTClass Serial2;
+extern UARTClass Serial;
+extern USARTClass Serial1;
+//extern USARTClass Serial2;
 //extern USARTClass Serial3;
 
 #endif

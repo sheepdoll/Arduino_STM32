@@ -16,7 +16,9 @@
 
 
 Revision History:
-
+14 June 2015
+	Serial write enabled from USART6 remapped to pins 12 and 14
+	
 13 June 2015:
 	partial implementation of digitalIO in wiring.  Mapping of some millisecond
 	timer abstractions to wiring.h

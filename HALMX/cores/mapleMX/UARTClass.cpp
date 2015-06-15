@@ -20,10 +20,43 @@
 #include <stdio.h>
 #include <string.h>
 #include "UARTClass.h"
+/*
+	install bridge hooks to syscalls that will allow printf() to
+	access one of the USARTS
+*/
+
+#ifdef __GNUC__
+  /* With GCC/RAISONANCE, small printf (option LD Linker->Libraries->Small printf
+     set to 'Yes') calls __io_putchar() */
+  #define PUTCHAR_PROTOTYPE int __io_putchar(int ch)
+#else
+  #define PUTCHAR_PROTOTYPE int fputc(int ch, FILE *f)
+#endif /* __GNUC__ */
+
+/**
+  * @brief  Retargets the C library printf function to the USART.
+  * @param  None
+  * @retval None
+  */
+PUTCHAR_PROTOTYPE
+{
+  /* Place your implementation of fputc here */
+  /* e.g. write a character to the EVAL_COM1 and Loop until the end of transmission */
+  
+  /* 
+  	huart6 is defined in usart.h and instantiated in usart.c 
+  	usart.h is defined in chip.h and the header is loaded through UARTClass.h
+  */ 
+  
+  HAL_UART_Transmit(&huart6, (uint8_t *)&ch, 1, 0xFFFF); 
+
+  return ch;
+}
+
 
 // Constructors ////////////////////////////////////////////////////////////////
 
-UARTClass::UARTClass( Uart *pUart, IRQn_Type dwIrq, uint32_t dwId, RingBuffer *pRx_buffer, RingBuffer *pTx_buffer )
+UARTClass::UARTClass( UART_HandleTypeDef *pUart, IRQn_Type dwIrq, uint32_t dwId, RingBuffer *pRx_buffer, RingBuffer *pTx_buffer )
 {
   _rx_buffer = pRx_buffer;
   _tx_buffer = pTx_buffer;
@@ -159,9 +192,10 @@ size_t UARTClass::write( const uint8_t uc_data )
   else 
   {
      // Bypass buffering and send character directly
-     _pUart->UART_THR = uc_data;
+
   }
 #endif
+  HAL_UART_Transmit(_pUart, (uint8_t *)&uc_data, 1, 0xFFFF); 
   return 1;
 }
 

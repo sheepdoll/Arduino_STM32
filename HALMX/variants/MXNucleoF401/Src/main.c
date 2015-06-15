@@ -111,7 +111,15 @@ int main(void)
 
 	initVariant();
 	
-	HAL_Delay(1); 	/* sam Arduino main() does this so we do it too */
+	HAL_Delay(7000); 	/* Wait 7 seconds to enable a serial coms channel */
+	
+	/* 
+		Usart6 is linked to printf for diagnostic use It is also mapped to
+		alternate function pins 12 and 14.  This code is adapted from
+		the prinf demo in the STM32F401 Nucleo examples folder
+	*/
+	
+	//printf("Serial backchannel enabled.\r\n");
   
   	/* Arduino optionally sets up USB callback stream here 
 #if defined(USBCON)

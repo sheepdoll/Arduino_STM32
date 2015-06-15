@@ -21,10 +21,12 @@
 #include <string.h>
 #include "USARTClass.h"
 
+
+
 // Constructors ////////////////////////////////////////////////////////////////
 
-USARTClass::USARTClass( Usart* pUsart, IRQn_Type dwIrq, uint32_t dwId, RingBuffer* pRx_buffer, RingBuffer* pTx_buffer )
-  : UARTClass((Uart*)pUsart, dwIrq, dwId, pRx_buffer, pTx_buffer)
+USARTClass::USARTClass( UART_HandleTypeDef* pUsart, IRQn_Type dwIrq, uint32_t dwId, RingBuffer* pRx_buffer, RingBuffer* pTx_buffer )
+  : UARTClass((UART_HandleTypeDef*)pUsart, dwIrq, dwId, pRx_buffer, pTx_buffer)
 {
   // In case anyone needs USART specific functionality in the future
   _pUsart=pUsart;

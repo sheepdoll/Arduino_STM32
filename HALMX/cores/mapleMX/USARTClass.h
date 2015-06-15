@@ -26,11 +26,11 @@
 //#include <chip.h>
 //#include "variant.h"
 
-/* stub for Usart */
+/* stub for Usart 
 typedef struct {
   int Reserved1[55];
  } Usart;
-
+*/
 
 // Define config for Serial.begin(baud, config);
 #define SERIAL_5N1 USARTClass::Mode_5N1
@@ -112,14 +112,14 @@ class USARTClass : public UARTClass
       Mode_8S2 // = US_MR_CHRL_8_BIT | US_MR_PAR_SPACE | US_MR_NBSTOP_2_BIT,
     };
 
-    USARTClass(Usart* pUsart, IRQn_Type dwIrq, uint32_t dwId, RingBuffer* pRx_buffer, RingBuffer* pTx_buffer);
+    USARTClass(UART_HandleTypeDef* pUsart, IRQn_Type dwIrq, uint32_t dwId, RingBuffer* pRx_buffer, RingBuffer* pTx_buffer);
 
     void begin(const uint32_t dwBaudRate);
     void begin(const uint32_t dwBaudRate, const USARTModes config);
     void begin(const uint32_t dwBaudRate, const UARTModes config);
 
   protected:
-    Usart* _pUsart;
+    UART_HandleTypeDef* _pUsart;
 };
 
 #endif // _USART_CLASS_
