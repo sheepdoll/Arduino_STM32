@@ -17,6 +17,7 @@
 */
 
 #include "arduino.h"
+//#include "variant.h"
 
 
 /*
@@ -151,8 +152,8 @@ extern "C" {
 
 extern const Pin2PortMapArray g_Pin2PortMapArray[]=
 {    
-	{GPIOA, GPIO_PIN_3	},	/*  D0/PA3	USART_RX	*/
-	{GPIOA, GPIO_PIN_2	},	/*  D1/PA2	USART_TX	*/
+	{GPIOA, GPIO_PIN_3	},	/*  D0/PA3	USART2_RX	*/
+	{GPIOA, GPIO_PIN_2	},	/*  D1/PA2	USART2_TX	*/
 	
     {GPIOA, GPIO_PIN_10	},	/*  D2/PA10	USART1_RX	*/
     {GPIOB, GPIO_PIN_3  },	/*  D3/PB3	SWO			*/
@@ -162,8 +163,8 @@ extern const Pin2PortMapArray g_Pin2PortMapArray[]=
     {GPIOA, GPIO_PIN_8}	,	/*  D7/PA8	GPIO T1		*/
 
     {GPIOA, GPIO_PIN_9	}, 	/*  D8/PA9	USART1_TX	*/
-    {GPIOC, GPIO_PIN_7	}, 	/*  D9/PC7	GPIO		*/
-    {GPIOB, GPIO_PIN_6	}, 	/*  D10/PB6	I2C1_SCL	*/
+    {GPIOC, GPIO_PIN_7	}, 	/*  D9/PC7	USART6Rx GPIO */
+    {GPIOB, GPIO_PIN_6	}, 	/*  D10/PB6	I2C1_SCL USART1TXAF */
     {GPIOA, GPIO_PIN_7	}, 	/*  D11/PA7	SPI_MOSI_NC	*/
     {GPIOA, GPIO_PIN_6	}, 	/*  D12/PA6	SPI_MISO_NC */
     
@@ -187,7 +188,7 @@ extern const Pin2PortMapArray g_Pin2PortMapArray[]=
     
     {GPIOC, GPIO_PIN_10 },	/*  D22/PC10 	SPI_SCK				ML1 */
 	{GPIOC, GPIO_PIN_12 },	/*  D23/PC12	SPI_MOSI			ML3 */
-    {GPIOB, GPIO_PIN_7  },	/*  D24/PB7		I2C1_SDA			M21 */
+    {GPIOB, GPIO_PIN_7  },	/*  D24/PB7		I2C1_SDA USART1RxAF	M21 */
     {GPIOC, GPIO_PIN_13 },	/*  D25/PC13	USER BLUE BUTTON	M23 */
     {GPIOC, GPIO_PIN_14 },	/*  D26/PC14	RCC_OSC32_IN 		M25 */
     {GPIOC, GPIO_PIN_15 },	/*  D27/PC15	RCC_OSC32_OUT		M26 */
@@ -197,12 +198,12 @@ extern const Pin2PortMapArray g_Pin2PortMapArray[]=
     {GPIOD, GPIO_PIN_2, },	/*  D31/PD2 	GPIO				ML4 */
     {GPIOC, GPIO_PIN_9, },	/*  D32/PC9		GPIO				MR1 */
     {GPIOC, GPIO_PIN_8, },	/*  D33/PC8		GPIO				MR2 */
-    {GPIOC, GPIO_PIN_6, },	/*  D34/PC6		GPIO				MR4 */
+    {GPIOC, GPIO_PIN_6, },	/*  D34/PC6		USART6Tx GPOO		MR4 */
     {GPIOC, GPIO_PIN_5	},	/*  D35/PC5		GPIO				MR6 */
-    {GPIOA, GPIO_PIN_12	},	/*  D36/PA12	USART6_RX USB_DP	M12 */
-    {GPIOA, GPIO_PIN_11 },	/*  D37/PA1		USART6_TX USB_DM	M14 */
+    {GPIOA, GPIO_PIN_12	},	/*  D36/PA12	USB_DP USART6_RX 	M12 AF */
+    {GPIOA, GPIO_PIN_11 },	/*  D37/PA11	USB_DM USART6_TX 	M14 AF */
     {GPIOB, GPIO_PIN_12,},	/*  D38/PB12	SPI2_NSS			M16 */
-    {GPIOB, GPIO_PIN_11 },	/*  D39/PB11	I2C2_SDA			M18 PWM-not working?*/
+    {GPIOB, GPIO_PIN_11 },	/*  D39/PB11	VCAPPower			M18 PWM-not working?*/
     {GPIOB, GPIO_PIN_2  },	/*  D40/PB2		BOOT1 !!			ML7 */
     {GPIOB, GPIO_PIN_1	},	/*  D41/PB1		GPIO 				M24 */
     {GPIOB, GPIO_PIN_15 },	/*  D42/PB15	SPI2_MOSI			M26 */
@@ -224,4 +225,68 @@ extern const Pin2PortMapArray g_Pin2PortMapArray[]=
 }
 #endif
 
+/*
+ * UART objects
+ */
+RingBuffer rx_buffer1;
+RingBuffer tx_buffer1;
 
+//UARTClass Serial(UART, UART_IRQn, ID_UART, &rx_buffer1, &tx_buffer1);
+UARTClass Serial(0, (IRQn_Type)0, 0, &rx_buffer1, &tx_buffer1);
+void serialEvent() __attribute__((weak));
+void serialEvent() { }
+
+// IT handlers
+//void UART_Handler(void)
+//{
+//  Serial.IrqHandler();
+//}
+
+// ----------------------------------------------------------------------------
+/*
+ * USART objects
+ */
+#if 1
+RingBuffer rx_buffer2;
+RingBuffer rx_buffer3;
+RingBuffer rx_buffer4;
+RingBuffer tx_buffer2;
+RingBuffer tx_buffer3;
+RingBuffer tx_buffer4;
+
+//USARTClass Serial1(USART0, USART0_IRQn, ID_USART0, &rx_buffer2, &tx_buffer2);
+void serialEvent1() __attribute__((weak));
+void serialEvent1() { }
+//USARTClass Serial2(USART1, USART1_IRQn, ID_USART1, &rx_buffer3, &tx_buffer3);
+void serialEvent2() __attribute__((weak));
+void serialEvent2() { }
+//USARTClass Serial3(USART3, USART3_IRQn, ID_USART3, &rx_buffer4, &tx_buffer4);
+void serialEvent3() __attribute__((weak));
+void serialEvent3() { }
+
+// IT handlers
+void USART0_Handler(void)
+{
+//  Serial1.IrqHandler();
+}
+
+void USART1_Handler(void)
+{
+//  Serial2.IrqHandler();
+}
+
+void USART3_Handler(void)
+{
+//  Serial3.IrqHandler();
+}
+
+// ----------------------------------------------------------------------------
+
+void serialEventRun(void)
+{
+  if (Serial.available()) serialEvent();
+//  if (Serial1.available()) serialEvent1();
+  if (Serial2.available()) serialEvent2();
+//  if (Serial3.available()) serialEvent3();
+}
+#endif

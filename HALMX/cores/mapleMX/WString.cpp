@@ -261,7 +261,7 @@ unsigned char String::concat(const String &s)
 {
 	return concat(s.buffer, s.len);
 }
-
+#if 0
 unsigned char String::concat(const char *cstr, unsigned int length)
 {
 	unsigned int newlen = len + length;
@@ -428,6 +428,7 @@ StringSumHelper & operator + (const StringSumHelper &lhs, const __FlashStringHel
 	if (!a.concat(rhs))	a.invalidate();
 	return a;
 }
+#endif
 
 /*********************************************/
 /*  Comparison                               */

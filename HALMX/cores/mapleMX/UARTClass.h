@@ -22,8 +22,17 @@
 #include "HardwareSerial.h"
 #include "RingBuffer.h"
 
-// Includes Atmel CMSIS
+// Includes [S]Atmel[/S] STM CMSIS
 #include <chip.h>
+/* #include "stm32f4xx_hal.h"  breaks the upper level abstraction model */
+
+//#include "variant.h"
+
+/* stub for Uart */
+typedef struct {
+  int Reserved1[55];
+ } Uart;
+
 
 #define SERIAL_8N1 UARTClass::Mode_8N1
 #define SERIAL_8E1 UARTClass::Mode_8E1
@@ -36,11 +45,11 @@ class UARTClass : public HardwareSerial
 {
   public:
     enum UARTModes {
-      Mode_8N1 = US_MR_CHRL_8_BIT | US_MR_NBSTOP_1_BIT | UART_MR_PAR_NO,
-      Mode_8E1 = US_MR_CHRL_8_BIT | US_MR_NBSTOP_1_BIT | UART_MR_PAR_EVEN,
-      Mode_8O1 = US_MR_CHRL_8_BIT | US_MR_NBSTOP_1_BIT | UART_MR_PAR_ODD,
-      Mode_8M1 = US_MR_CHRL_8_BIT | US_MR_NBSTOP_1_BIT | UART_MR_PAR_MARK,
-      Mode_8S1 = US_MR_CHRL_8_BIT | US_MR_NBSTOP_1_BIT | UART_MR_PAR_SPACE,
+      Mode_8N1 = 0, //US_MR_CHRL_8_BIT | US_MR_NBSTOP_1_BIT | UART_MR_PAR_NO,
+      Mode_8E1, // = US_MR_CHRL_8_BIT | US_MR_NBSTOP_1_BIT | UART_MR_PAR_EVEN,
+      Mode_8O1, // = US_MR_CHRL_8_BIT | US_MR_NBSTOP_1_BIT | UART_MR_PAR_ODD,
+      Mode_8M1, // = US_MR_CHRL_8_BIT | US_MR_NBSTOP_1_BIT | UART_MR_PAR_MARK,
+      Mode_8S1 // = US_MR_CHRL_8_BIT | US_MR_NBSTOP_1_BIT | UART_MR_PAR_SPACE,
     };
     UARTClass(Uart* pUart, IRQn_Type dwIrq, uint32_t dwId, RingBuffer* pRx_buffer, RingBuffer* pTx_buffer);
 
@@ -70,7 +79,7 @@ class UARTClass : public HardwareSerial
 
     Uart* _pUart;
     IRQn_Type _dwIrq;
-    uint32_t _dwId;
+   uint32_t _dwId;
 
 };
 

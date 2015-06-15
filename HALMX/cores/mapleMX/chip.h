@@ -4,6 +4,8 @@
 
 #include <stdbool.h>  /* for wiring constants */
 
+#include "stm32f4xx_hal.h"  /* Ideally this is defined in variant */
+#include "usart.h"
 
 /* define some abstractions that are identical to Arduino */
 

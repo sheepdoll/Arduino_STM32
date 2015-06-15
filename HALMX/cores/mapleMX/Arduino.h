@@ -71,14 +71,6 @@ typedef void (*voidFuncPtr)( void ) ;
     #define WEAK __attribute__ ((weak))
 #endif
 
-/* hardware PIN_IO table setting moved to variant */
-/*
-	For STM32 the pin to port accessors are defined in the
-	build's variant.  STM has a lot more chip footprints than ATMEL does
-	by setting this in the variant, users can build a new definition
-	directly from STM32CubeMX.
-*/
-#include "variant.h"
 
 
 #ifdef __cplusplus
@@ -90,6 +82,16 @@ typedef void (*voidFuncPtr)( void ) ;
 #include "WMath.h"
 #include "HardwareSerial.h"
 #include "wiring_pulse.h"
+
+/* hardware PIN_IO table setting moved to variant */
+/*
+	For STM32 the pin to port accessors are defined in the
+	build's variant.  STM has a lot more chip footprints than ATMEL does
+	by setting this in the variant, users can build a new definition
+	directly from STM32CubeMX.
+*/
+#include "variant.h"
+
 
 #endif // __cplusplus
 

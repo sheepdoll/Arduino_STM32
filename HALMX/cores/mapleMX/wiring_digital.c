@@ -17,6 +17,7 @@
 */
 
 #include "Arduino.h"
+#include "variant.h"
 
 #ifdef __cplusplus
  extern "C" {

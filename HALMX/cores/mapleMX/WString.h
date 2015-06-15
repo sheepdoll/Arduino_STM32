@@ -123,6 +123,7 @@ public:
 	String & operator += (const __FlashStringHelper *str){concat(str); return (*this);}
 
 	friend StringSumHelper & operator + (const StringSumHelper &lhs, const String &rhs);
+#if 1
 	friend StringSumHelper & operator + (const StringSumHelper &lhs, const char *cstr);
 	friend StringSumHelper & operator + (const StringSumHelper &lhs, char c);
 	friend StringSumHelper & operator + (const StringSumHelper &lhs, unsigned char num);
@@ -133,7 +134,7 @@ public:
 	friend StringSumHelper & operator + (const StringSumHelper &lhs, float num);
 	friend StringSumHelper & operator + (const StringSumHelper &lhs, double num);
 	friend StringSumHelper & operator + (const StringSumHelper &lhs, const __FlashStringHelper *rhs);
-
+#endif
 	// comparison (only works w/ Strings and "strings")
 	operator StringIfHelperType() const { return buffer ? &String::StringIfHelper : 0; }
 	int compareTo(const String &s) const;
