@@ -151,8 +151,16 @@ extern void pinMode( uint32_t ulPin, uint32_t ulMode )
 
 	/*
 		this speed mapping taken from blink example
+		
+		There may be some chip specific issues here
+		Roger Clark identified that the F1xx HAL does
+		not define FAST for speed.
+		
+		Online examples of Blink are all over the place on
+		how this should be set.
+		
 	*/
-  	GPIO_InitStruct.Speed = GPIO_SPEED_FAST;
+  	GPIO_InitStruct.Speed = GPIO_SPEED_HIGH;
   	
   	/*
   		now we can call the actual setup code note that the

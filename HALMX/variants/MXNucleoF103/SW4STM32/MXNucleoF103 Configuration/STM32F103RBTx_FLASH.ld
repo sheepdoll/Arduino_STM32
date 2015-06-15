@@ -4,8 +4,8 @@
 
 **  File        : LinkerScript.ld
 **
-**  Abstract    : Linker script for STM32F401RETx Device with
-**                512KByte FLASH, 96KByte RAM
+**  Abstract    : Linker script for STM32F103RBTx Device with
+**                128KByte FLASH, 20KByte RAM
 **
 **                Set heap size, stack size and stack location according
 **                to application requirements.
@@ -33,7 +33,7 @@
 ENTRY(Reset_Handler)
 
 /* Highest address of the user mode stack */
-_estack = 0x20017FFF;    /* end of RAM */
+_estack = 0x20004FFF;    /* end of RAM */
 /* Generate a link error if heap and stack don't fit into RAM */
 _Min_Heap_Size = 0;      /* required amount of heap  */
 _Min_Stack_Size = 0; /* required amount of stack */
@@ -41,8 +41,8 @@ _Min_Stack_Size = 0; /* required amount of stack */
 /* Specify the memory areas */
 MEMORY
 {
-FLASH (rx)      : ORIGIN = 0x08000000, LENGTH = 512K
-RAM (xrw)      : ORIGIN = 0x20000000, LENGTH = 96K
+FLASH (rx)      : ORIGIN = 0x8000000, LENGTH = 128K
+RAM (xrw)      : ORIGIN = 0x20000000, LENGTH = 20K
 }
 
 /* Define output sections */

@@ -20,38 +20,6 @@
 #include <stdio.h>
 #include <string.h>
 #include "UARTClass.h"
-/*
-	install bridge hooks to syscalls that will allow printf() to
-	access one of the USARTS
-*/
-
-#ifdef __GNUC__
-  /* With GCC/RAISONANCE, small printf (option LD Linker->Libraries->Small printf
-     set to 'Yes') calls __io_putchar() */
-  #define PUTCHAR_PROTOTYPE int __io_putchar(int ch)
-#else
-  #define PUTCHAR_PROTOTYPE int fputc(int ch, FILE *f)
-#endif /* __GNUC__ */
-
-/**
-  * @brief  Retargets the C library printf function to the USART.
-  * @param  None
-  * @retval None
-  */
-PUTCHAR_PROTOTYPE
-{
-  /* Place your implementation of fputc here */
-  /* e.g. write a character to the EVAL_COM1 and Loop until the end of transmission */
-  
-  /* 
-  	huart6 is defined in usart.h and instantiated in usart.c 
-  	usart.h is defined in chip.h and the header is loaded through UARTClass.h
-  */ 
-  
-  HAL_UART_Transmit(&huart6, (uint8_t *)&ch, 1, 0xFFFF); 
-
-  return ch;
-}
 
 
 // Constructors ////////////////////////////////////////////////////////////////

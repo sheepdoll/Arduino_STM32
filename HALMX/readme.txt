@@ -16,6 +16,9 @@
 
 
 Revision History:
+15 June 2015
+	Added definition for F103RB Nucleo board.  Changes to platforms.txt
+	to support different processor cores from boards.txt
 14 June 2015
 	Serial write enabled from USART6 remapped to pins 12 and 14
 	

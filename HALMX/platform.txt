@@ -8,7 +8,7 @@
 # http://stm32duino.com/
 #
 
-name=STM32CubeMXF4_testing
+name=STM32CubeMX_testing
 version=1.6.4
 
 compiler.warning_flags=-w -DDEBUG_LEVEL=DEBUG_NONE
@@ -41,10 +41,9 @@ compiler.size.cmd=arm-none-eabi-size
 compiler.define=-DARDUINO=                            
 
 # this can be overriden in boards.txt
-build.f_cpu=84000000L
-build.mcu=cortex-m4
+#build.f_cpu=84000000L
+#build.mcu=cortex-m4
 #sheepdoll build.common_flags=-mthumb  -march=armv7-m -D__STM32F4__
-build.common_flags=-mthumb  -D__STM32F4__ 
 
 # this is the static library built by the gun ar tool
 build.variant_system_lib=libmaple.a
@@ -76,14 +75,16 @@ compiler.elf2hex.extra_flags=
 #compiler.libs.c.flags="-I{build.system.path}/libmaple" "-I{build.system.path}/libmaple/include" "-I{build.system.path}/libmaple/stm32f1/include" \
 #"-I{build.system.path}/libmaple/stm32f1/include/series" "-I{build.system.path}/libmaple/usb/stm32f1" "-I{build.system.path}/libmaple/usb/usb_lib" 
 
-#compiler.libs.c.flags="-I{build.system.path}/libmaple" "-I{build.system.path}/libmaple/include" "-I{build.system.path}/libmaple/stm32f1/include"                                                           "-I{build.system.path}/libmaple/usb/stm32f1" "-I{build.system.path}/libmaple/usb/usb_lib" 
+#compiler.libs.c.flags="-I{build.system.path}/libmaple" "-I{build.system.path}/libmaple/include" "-I{build.system.path}/libmaple/stm32f1/include" "-I{build.system.path}/libmaple/usb/stm32f1" "-I{build.system.path}/libmaple/usb/usb_lib" 
 
 # this is the F4 include path that was working before modification 
 #compiler.libs.c.flags="-I{build.core.path}/libmaple" -I{build.core.path}/libmaple/usbF4 -I{build.core.path}/libmaple/usbF4/STM32_USB_Device_Library/Core/inc \
 #-I{build.core.path}/libmaple/usbF4/STM32_USB_Device_Library/Class/cdc/inc -I{build.core.path}/libmaple/usbF4/STM32_USB_OTG_Driver/inc 
 #-I{build.core.path}/libmaple/usbF4/VCP 
 
-compiler.libs.c.flags= "-I{build.variant.path}/Drivers/CMSIS/Device/ST/STM32F4xx/Include" "-I{build.variant.path}/Drivers/CMSIS/Include" "-I{build.variant.path}/Drivers/STM32F4xx_HAL_Driver/Inc" "-I{build.variant.path}/Inc"
+
+# sheepdoll a better more generic library include paths
+compiler.libs.c.flags= "-I{build.variant.path}/Drivers/CMSIS/Device/ST/{build.CMSISInc}" "-I{build.variant.path}/Drivers/CMSIS/Include" "-I{build.variant.path}/Drivers/{build.DRIVERS}" "-I{build.variant.path}/Inc"
 
 
 # build patterns
